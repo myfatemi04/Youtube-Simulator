@@ -28,4 +28,7 @@ public class YoutubeSimulator {
 			y.day++;
 		}
 	}
+	public static void close() {
+		System.exit(0);
+	}
 }

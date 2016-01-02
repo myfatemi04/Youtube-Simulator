@@ -1,5 +1,5 @@
 package com.mkprog.youtube;
 
 public enum GameState {
-	VIDSTATS, MENU, UPGRADES;
+	VIDSTATS, MENU, UPGRADES, PAUSE;
 }

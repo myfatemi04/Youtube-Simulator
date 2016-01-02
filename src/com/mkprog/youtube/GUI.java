@@ -1,11 +1,33 @@
 package com.mkprog.youtube;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_LINEAR;
+import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_PROJECTION;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
+import static org.lwjgl.opengl.GL11.glBlendFunc;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.glColor3f;
+import static org.lwjgl.opengl.GL11.glColor4f;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glMatrixMode;
+import static org.lwjgl.opengl.GL11.glOrtho;
+import static org.lwjgl.opengl.GL11.glRectd;
+import static org.lwjgl.opengl.GL11.glTexParameterf;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.SlickException;
@@ -21,6 +43,24 @@ public class GUI extends Thread {
 	boolean fading = false;
 	boolean sh = false;
 	float fade = 0;
+	GameState oldState;
+	KeyboardInput keyEsc = new KeyboardInput(Keyboard.KEY_ESCAPE) {
+		public void action() {
+			if (YoutubeSimulator.state == GameState.PAUSE) {
+				YoutubeSimulator.close();
+			} else if (YoutubeSimulator.state != GameState.MENU) {
+				oldState = YoutubeSimulator.state;
+				YoutubeSimulator.state = GameState.PAUSE;
+			}
+		}
+	};
+	KeyboardInput keySpace = new KeyboardInput(Keyboard.KEY_SPACE) {
+		public void action() {
+			if (YoutubeSimulator.state == GameState.PAUSE) {
+				YoutubeSimulator.state = oldState;
+			}
+		}
+	};
 	public void run() {
 		format.setRoundingMode(RoundingMode.HALF_UP);
 		setup();
@@ -31,6 +71,8 @@ public class GUI extends Thread {
 				videoScreen((Video)Button.VIDEOBUTTON.getParam());
 			else if (YoutubeSimulator.state == GameState.MENU) {
 				menu();
+			} else if (YoutubeSimulator.state == GameState.PAUSE) {
+				pauseScreen();
 			}
 			Display.update();
 			Display.sync(60);
@@ -79,9 +121,9 @@ public class GUI extends Thread {
 	}
 	@SuppressWarnings("unchecked")
 	public void videoScreen(Video video) {
+		keyEsc.update();
+		keySpace.update();
 		glClearColor(col(210),col(33),col(33),0);
-		
-		
 		try {
 			uf.getEffects().add(new ColorEffect(java.awt.Color.WHITE));
 			uf.addAsciiGlyphs();
@@ -119,7 +161,7 @@ public class GUI extends Thread {
 				uf.drawString(10, 250, "Shared!");
 				glColor4f(col(210),col(33),col(33),col(fade));
 				TextureImpl.bindNone();
-				glRectd(10,250,10 + uf.getWidth("Shared!"), 250 + uf.getLineHeight());
+				glRectd(10,255,10 + uf.getWidth("Shared!"), 255 + uf.getLineHeight());
 				if (fade < 256) {
 					fade+=((float)256)/50;
 				} else {
@@ -128,7 +170,22 @@ public class GUI extends Thread {
 				}
 			}
 		glDisable(GL_BLEND);
-		
-		
+	}
+	public void pauseScreen() {
+		keyEsc.update();
+		keySpace.update();
+		glClearColor(col(210), col(33), col(33), 0);
+		try {
+			uf.getEffects().add(new ColorEffect(java.awt.Color.WHITE));
+			uf.addAsciiGlyphs();
+			uf.loadGlyphs();
+		} catch (SlickException e) {
+			
+		}
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			uf.drawString(10, 10, "Press Esc to exit.");
+			uf.drawString(10, 40, "Press Space to return.");
+		glDisable(GL_BLEND);
 	}
 }
