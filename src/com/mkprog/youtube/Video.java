@@ -9,7 +9,7 @@ public class Video {
 	private int id;
 	private String title;
 	private String desc;
-	private double lvratio;
+	private double lvratio = 0.025;
 	private long views;
 	private int viewsToday = 0;
 	private int likes;
@@ -22,7 +22,7 @@ public class Video {
 	int shares = 0;
 	private LinkedList<Integer> viewsPerDay = new LinkedList<Integer>();
 	public void share() {
-		viewChance += 0.005;
+	//	viewChance += 0.005;
 		shares++;
 	}
 	public void setType(Enums.VideoType vtype) {
@@ -83,10 +83,12 @@ public class Video {
 		ads = true;
 	}
 	public void view() {
+		
 		views++;
 		viewsToday++;
 		this.earnings += 0.001;
 		YoutubeSimulator.getGamePlayer().money+=0.001;
+		syncLVRatio();
 	}
 	public void addViews(int views) {
 		viewsToday += views;
@@ -94,7 +96,7 @@ public class Video {
 	}
 	
 	public void syncLVRatio() {
-		lvratio = likes/(Math.sqrt(views));
+		lvratio = ((likes + shares) / 10)/(Math.sqrt(views));
 	}
 	public Video(String name, String desc, Channel channel, Enums.VideoType vtype) {
 		this.title = name;

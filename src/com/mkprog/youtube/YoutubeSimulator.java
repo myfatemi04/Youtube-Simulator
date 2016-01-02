@@ -17,7 +17,7 @@ public class YoutubeSimulator {
 		
 		gui.start();
 		while (true) {
-			for (int i = 0; i < 60 * 12; i++) {
+			for (int i = 0; i < 60 * 9; i++) {
 				y.tick();
 			}
 			for (Video v : y.videos) {
