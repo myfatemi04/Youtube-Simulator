@@ -184,8 +184,8 @@ public class GUI extends Thread {
 		}
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			uf.drawString(10, 10, "Press Esc to exit.");
-			uf.drawString(10, 40, "Press Space to return.");
+			uf.drawString(10, 10, "Press Esc to exit");
+			uf.drawString(10, 40, "Press Space to return");
 		glDisable(GL_BLEND);
 	}
 }
