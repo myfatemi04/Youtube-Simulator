@@ -63,7 +63,7 @@ public class GUI extends Thread {
 		glMatrixMode(GL_MODELVIEW);
 		
 		try {
-			uf = new UnicodeFont("ps2p.ttf",20,false,false);
+			uf = new UnicodeFont("zrnic.ttf",40,false,false);
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
