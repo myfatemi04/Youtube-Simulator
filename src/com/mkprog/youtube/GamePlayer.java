@@ -7,7 +7,7 @@ public class GamePlayer {
 	public final String username;
 	public double money = 1000;
 	public Camera camera = Camera.camcorder;
-	public EditingSoftware currentSoftware = EditingSoftware.movie_maker;
+	public EditingSoftware currentSoftware = EditingSoftware.raw_video;
 	public final User user;
 	public double standardVideoQuality() {
 		return camera.getQuality() * currentSoftware.getQuality();
