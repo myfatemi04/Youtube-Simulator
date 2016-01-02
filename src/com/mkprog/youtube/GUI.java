@@ -111,6 +111,7 @@ public class GUI extends Thread {
 			uf.drawString(10, 70, "EARNINGS : $" + format.format(video.getEarnings()));
 			uf.drawString(10, 130, "SHARES : " + video.shares);
 			uf.drawString(10, 160, "LIKES : " + video.getLikes());
+			uf.drawString(10, 190, "SUBSCRIBERS : " + YoutubeSimulator.getGamePlayer().user.channels.get(0).getSubs());
 			if (fading) {
 				uf.drawString(10, 100, "Shared!");
 				glColor4f(col(210),col(33),col(33),col(fade));
