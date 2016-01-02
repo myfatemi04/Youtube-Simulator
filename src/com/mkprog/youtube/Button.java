@@ -21,7 +21,7 @@ public class Button {
 		}
 	};
 	public static Button VIDEOBUTTON = new Button(1110,0,170,100,1,"youtube-play-forwards.png") {
-		Video param = YoutubeSimulator.y.videos.get(0);
+		Video param = YoutubeSimulator.getGamePlayer().user.channels.get(YoutubeSimulator.currentChannelIndex).getVideos().get(YoutubeSimulator.currentVideoIndex);
 		public Video getParam() {
 			return param;
 		}

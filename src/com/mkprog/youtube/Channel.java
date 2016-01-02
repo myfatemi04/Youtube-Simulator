@@ -35,4 +35,7 @@ public class Channel {
 	public int getSubs() {
 		return subs;
 	}
+	public void upload(Video video) {
+		videos.add(video);
+	}
 }

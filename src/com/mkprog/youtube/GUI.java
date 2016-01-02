@@ -15,6 +15,7 @@ import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.opengl.TextureImpl;
 
 public class GUI extends Thread {
+	
 	DecimalFormat format = new DecimalFormat("0.00");
 	UnicodeFont uf = null;
 	boolean fading = false;
@@ -106,19 +107,21 @@ public class GUI extends Thread {
  		 */
 		glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			uf.drawString(10, 10, "VIEWS    : " + video.getViews());
-			uf.drawString(10, 40, "DAY      : " + YoutubeSimulator.y.day);
-			uf.drawString(10, 70, "EARNINGS : $" + format.format(video.getEarnings()));
-			uf.drawString(10, 130, "SHARES : " + video.shares);
-			uf.drawString(10, 160, "LIKES : " + video.getLikes());
-			uf.drawString(10, 190, "SUBSCRIBERS : " + YoutubeSimulator.getGamePlayer().user.channels.get(0).getSubs());
+			uf.drawString(10, 10, "CHANNEL : " + YoutubeSimulator.getGamePlayer().user.channels.get(YoutubeSimulator.currentChannelIndex).getChannelName());
+			uf.drawString(10, 40, "VIDEO : " + YoutubeSimulator.getGamePlayer().user.channels.get(YoutubeSimulator.currentChannelIndex).getVideos().get(YoutubeSimulator.currentVideoIndex).getTitle());
+			uf.drawString(10, 70, "VIEWS    : " + YoutubeSimulator.getGamePlayer().user.channels.get(YoutubeSimulator.currentChannelIndex).getVideos().get(YoutubeSimulator.currentVideoIndex).getViews());
+			uf.drawString(10, 100, "DAY      : " + YoutubeSimulator.y.day);
+			uf.drawString(10, 130, "EARNINGS : $" + format.format(video.getEarnings()));
+			uf.drawString(10, 160, "SHARES : " + video.shares);
+			uf.drawString(10, 190, "LIKES : " + video.getLikes());
+			uf.drawString(10, 220, "SUBSCRIBERS : " + YoutubeSimulator.getGamePlayer().user.channels.get(0).getSubs());
 			if (fading) {
-				uf.drawString(10, 100, "Shared!");
+				uf.drawString(10, 250, "Shared!");
 				glColor4f(col(210),col(33),col(33),col(fade));
 				TextureImpl.bindNone();
-				glRectd(10,100,10 + uf.getWidth("Shared!"),100 + uf.getLineHeight());
+				glRectd(10,250,10 + uf.getWidth("Shared!"), 250 + uf.getLineHeight());
 				if (fade < 256) {
-					fade+=((float)256)/30;
+					fade+=((float)256)/50;
 				} else {
 					fade = 0;
 					fading = false;

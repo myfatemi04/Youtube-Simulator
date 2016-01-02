@@ -76,8 +76,8 @@ public class Video {
 		}
 		return recent;
 	}
-	public void upload() {
-		YoutubeSimulator.y.videos.add(this);
+	public void upload(Channel channel) {
+		YoutubeSimulator.getGamePlayer().user.channels.get(YoutubeSimulator.getGamePlayer().user.channels.indexOf(channel)).upload(this);
 	}
 	public void monetize() {
 		ads = true;

@@ -6,10 +6,8 @@ import java.util.Random;
 public class Youtube {
 	Random r = new Random();
 	int day = 1;
-	ArrayList<Channel> channels = new ArrayList<Channel>();
 	ArrayList<User> users = new ArrayList<User>();
 	ArrayList<Video> top = new ArrayList<Video>();
-	ArrayList<Video> videos = new ArrayList<Video>();
 	private boolean chance(double n, double d) {
 		return r.nextDouble() < n/d;
 	}
@@ -19,7 +17,7 @@ public class Youtube {
 		} catch (Exception e) {
 			
 		}
-		for (Video curr : videos) {
+		for (Video curr : YoutubeSimulator.getGamePlayer().user.channels.get(YoutubeSimulator.currentChannelIndex).getVideos()) {
 			curr.setType(Enums.VideoType.gaming);
 			if (chance(curr.viewChance, 115*(Math.sqrt(curr.viewChance)))) {
 				curr.view();
