@@ -25,7 +25,6 @@ import static org.lwjgl.opengl.GL11.glTexParameterf;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.LinkedList;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -151,19 +150,18 @@ public class GUI extends Thread {
 		glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			uf.drawString(10, 10, "CHANNEL : " + YoutubeSimulator.getGamePlayer().user.channels.get(YoutubeSimulator.currentChannelIndex).getChannelName());
-			uf.drawString(10, 40, "PLAYLIST : " + (YoutubeSimulator.getGamePlayer().user.channels.get(YoutubeSimulator.currentChannelIndex).getVideos().get(YoutubeSimulator.currentVideoIndex).getPlaylists().size() > 0 ? joinPlaylistNames((YoutubeSimulator.getGamePlayer().user.channels.get(YoutubeSimulator.currentChannelIndex)).getVideos().get(YoutubeSimulator.currentVideoIndex).getPlaylists(), ", "):"NONE")) ;
-			uf.drawString(10, 70, "VIDEO : " + YoutubeSimulator.getGamePlayer().user.channels.get(YoutubeSimulator.currentChannelIndex).getVideos().get(YoutubeSimulator.currentVideoIndex).getTitle());
-			uf.drawString(10, 100, "VIEWS : " + YoutubeSimulator.getGamePlayer().user.channels.get(YoutubeSimulator.currentChannelIndex).getVideos().get(YoutubeSimulator.currentVideoIndex).getViews());
-			uf.drawString(10, 130, "DAY : " + YoutubeSimulator.y.day);
-			uf.drawString(10, 160, "EARNINGS : $" + format.format(video.getEarnings()));
-			uf.drawString(10, 190, "SHARES : " + video.shares);
-			uf.drawString(10, 220, "LIKES : " + video.getLikes());
-			uf.drawString(10, 250, "SUBSCRIBERS : " + YoutubeSimulator.getGamePlayer().user.channels.get(0).getSubs());
+			uf.drawString(10, 40, "VIDEO : " + YoutubeSimulator.getGamePlayer().user.channels.get(YoutubeSimulator.currentChannelIndex).getVideos().get(YoutubeSimulator.currentVideoIndex).getTitle());
+			uf.drawString(10, 70, "VIEWS    : " + YoutubeSimulator.getGamePlayer().user.channels.get(YoutubeSimulator.currentChannelIndex).getVideos().get(YoutubeSimulator.currentVideoIndex).getViews());
+			uf.drawString(10, 100, "DAY      : " + YoutubeSimulator.y.day);
+			uf.drawString(10, 130, "EARNINGS : $" + format.format(video.getEarnings()));
+			uf.drawString(10, 160, "SHARES : " + video.shares);
+			uf.drawString(10, 190, "LIKES : " + video.getLikes());
+			uf.drawString(10, 220, "SUBSCRIBERS : " + YoutubeSimulator.getGamePlayer().user.channels.get(0).getSubs());
 			if (fading) {
-				uf.drawString(10, 280, "Shared!");
+				uf.drawString(10, 250, "Shared!");
 				glColor4f(col(210),col(33),col(33),col(fade));
 				TextureImpl.bindNone();
-				glRectd(10,285,10 + uf.getWidth("Shared!"), 285 + uf.getLineHeight());
+				glRectd(10,255,10 + uf.getWidth("Shared!"), 255 + uf.getLineHeight());
 				if (fade < 256) {
 					fade+=((float)256)/50;
 				} else {
@@ -173,7 +171,6 @@ public class GUI extends Thread {
 			}
 		glDisable(GL_BLEND);
 	}
-	@SuppressWarnings("unchecked")
 	public void pauseScreen() {
 		keyEsc.update();
 		keySpace.update();
@@ -190,13 +187,5 @@ public class GUI extends Thread {
 			uf.drawString(10, 10, "Press Esc to exit");
 			uf.drawString(10, 40, "Press Space to return");
 		glDisable(GL_BLEND);
-	}
-	public String joinPlaylistNames(LinkedList<Playlist> list, String separator) {
-		StringBuilder output = new StringBuilder();
-		output.append(list.get(0));
-		for (Playlist i : list.subList(1, list.size())) {
-			output.append(separator + i.getName());
-		}
-		return output.toString();
 	}
 }
