@@ -20,6 +20,7 @@ public class Video {
 	double popularity = 0;
 	private Channel channel;
 	int shares = 0;
+	private LinkedList<Playlist> currentPlaylists = new LinkedList<Playlist>();
 	private LinkedList<Integer> viewsPerDay = new LinkedList<Integer>();
 	public void share() {
 		viewChance += 0.005;
@@ -75,6 +76,15 @@ public class Video {
 			recent += viewsPerDay.get(i);
 		}
 		return recent;
+	}
+	public void addToPlaylist(Playlist playlist) {
+		this.currentPlaylists.add(playlist);
+	}
+	public void removeFromPlaylist(Playlist playlist) {
+		this.currentPlaylists.remove(playlist);
+	}
+	public LinkedList<Playlist> getPlaylists() {
+		return currentPlaylists;
 	}
 	public void upload(Channel channel) {
 		YoutubeSimulator.getGamePlayer().user.channels.get(YoutubeSimulator.getGamePlayer().user.channels.indexOf(channel)).upload(this);
