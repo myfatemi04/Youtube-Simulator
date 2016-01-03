@@ -68,11 +68,13 @@ public class GUI extends Thread {
 			glClear(GL_COLOR_BUFFER_BIT);
 			glColor4f(1,1,1,0);
 			if (YoutubeSimulator.state == GameState.VIDSTATS)
-				videoScreen((Video)Button.VIDEOBUTTON.getParam());
+				videoScreen(YoutubeSimulator.getGamePlayer().user.channels.get(YoutubeSimulator.currentChannelIndex).getVideos().get(YoutubeSimulator.currentVideoIndex));
 			else if (YoutubeSimulator.state == GameState.MENU) {
 				menu();
 			} else if (YoutubeSimulator.state == GameState.PAUSE) {
 				pauseScreen();
+			} else if (YoutubeSimulator.state == GameState.UPLOAD) {
+				uploadScreen();
 			}
 			Display.update();
 			Display.sync(60);
@@ -84,7 +86,7 @@ public class GUI extends Thread {
 	public void menu() {
 		glClear(GL_COLOR_BUFFER_BIT);
 		
-		Button.VIDEOBUTTON.update(0);
+		Button.forwardButton.update(0);
 	}
 	public void setup() {
 		try {
@@ -141,7 +143,8 @@ public class GUI extends Thread {
  		/**
  		 * BUTTON UPDATES GO HERE
  		 */
- 		Button.MENUBUTTON.update(0);
+ 		Button.uploadButton.update(0);
+ 		Button.backButton.update(0);
  		
  		/**
  		 * FONTS GO HERE
@@ -171,6 +174,7 @@ public class GUI extends Thread {
 			}
 		glDisable(GL_BLEND);
 	}
+	@SuppressWarnings("unchecked")
 	public void pauseScreen() {
 		keyEsc.update();
 		keySpace.update();
@@ -187,5 +191,17 @@ public class GUI extends Thread {
 			uf.drawString(10, 10, "Press Esc to exit");
 			uf.drawString(10, 40, "Press Space to return");
 		glDisable(GL_BLEND);
+	}
+	@SuppressWarnings("unchecked")
+	public void uploadScreen() {
+		glClearColor(col(210), col(33), col(33), 0);
+		try {
+			uf.getEffects().add(new ColorEffect(java.awt.Color.WHITE));
+			uf.addAsciiGlyphs();
+			uf.loadGlyphs();
+		} catch (SlickException e) {
+			
+		}
+		Button.backButton.update(0);
 	}
 }

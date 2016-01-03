@@ -11,35 +11,41 @@ import org.newdawn.slick.opengl.TextureLoader;
 
 public class Button {
 	public static final float RATIO = 1.7f;
-	public Video param;
-	public Video getParam() {
-		return param;
-	}
-	public static Button MENUBUTTON = new Button(1110,0,170,100,1,"youtube-play-backwards.png") {
+	private static GameState oldGameState;
+	private static boolean oldState;
+	public static Button uploadButton = new Button(500, 100, 653, 303, "uploadbutton.png") {
 		public void action(int i) {
-			YoutubeSimulator.state = GameState.MENU;
+			this.setOldGameState(YoutubeSimulator.state);
+			YoutubeSimulator.state = GameState.UPLOAD;
 		}
 	};
-	public static Button VIDEOBUTTON = new Button(1110,0,170,100,1,"youtube-play-forwards.png") {
-		Video param = YoutubeSimulator.getGamePlayer().user.channels.get(YoutubeSimulator.currentChannelIndex).getVideos().get(YoutubeSimulator.currentVideoIndex);
-		public Video getParam() {
-			return param;
-		}
+	public static Button backButton = new Button(1110, 0, 170, 100, "youtube-play-backwards.png") {
 		public void action(int i) {
+			if (YoutubeSimulator.state == GameState.VIDSTATS) {
+				YoutubeSimulator.state = GameState.MENU;
+				this.setOldGameState(GameState.VIDSTATS);
+			} else if (YoutubeSimulator.state == GameState.UPLOAD) {
+				YoutubeSimulator.state = this.getOldGameState();
+				this.setOldGameState(GameState.UPLOAD);
+			}
+		}
+	};
+	public static Button forwardButton = new Button(1110, 0, 170, 100, "youtube-play-forwards.png") {
+		public void action(int i) {
+			this.setOldGameState(YoutubeSimulator.state);
 			YoutubeSimulator.state = GameState.VIDSTATS;
 		}
 	};
 	public void action(int i) {
 		
 	}
-	double x,y,width,height,s;
+	public double x,y,width,height,s;
 	Texture t;
-	public Button(double x, double y, double width, double height, double scale, String fsrc) {
+	public Button(double x, double y, double width, double height, String fsrc) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		this.s = scale;
 		try {
 			t = TextureLoader.getTexture("PNG", new FileInputStream(new File(fsrc)));
 			t.setTextureFilter(GL_NEAREST);
@@ -47,7 +53,7 @@ public class Button {
 		
 		}
 	}
-	public void draw(double x, double y, double w, double h, double s) {
+	public void draw(double x, double y, double w, double h) {
 		double fx, fy;
 		fx = t.getWidth();
 		fy = t.getHeight();
@@ -71,18 +77,23 @@ public class Button {
 		int x,y;
 		x = Mouse.getX();
 		y = 720 - Mouse.getY() - 1;
-		while(Mouse.next()) {
-			if (((x > this.x && x < this.width + this.x) && (y > this.y && y < this.height + this.y)) && (Mouse.isButtonDown(0))) {
-				return true;
-			}
+		if (((x > this.x && x < this.width + this.x) && (y > this.y && y < this.height + this.y)) && (Mouse.isButtonDown(0)) && oldState == false) {
+			return true;
 		}
 		return false;
 	}
 	public void update(int i) {
 		t.bind();
-		draw(x, y, width, height, s);
+		draw(x, y, width, height);
 		if (buttonClicked()) {
 			action(i);
 		}
+		oldState = Mouse.isButtonDown(0);
+	}
+	public void setOldGameState(GameState newState) {
+		oldGameState = newState;
+	}
+	public GameState getOldGameState() {
+		return oldGameState;
 	}
 }
